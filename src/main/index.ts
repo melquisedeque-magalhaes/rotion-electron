@@ -1,5 +1,5 @@
 import { app, shell, BrowserWindow } from 'electron'
-import * as path from 'path'
+import path from 'node:path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
 function createWindow(): void {
@@ -9,6 +9,7 @@ function createWindow(): void {
     height: 670,
     show: false,
     autoHideMenuBar: true,
+    backgroundColor: '#17141f',
     ...(process.platform === 'linux'
       ? {
           icon: path.join(__dirname, '../../build/icon.png'),
@@ -36,6 +37,11 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
+}
+
+// mudar icon no macos na docker
+if (process.platform === 'darwin') {
+  app.dock.setIcon(path.resolve(__dirname, 'icon.png'))
 }
 
 // This method will be called when Electron has finished
